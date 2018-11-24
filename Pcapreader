@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+# encoding utf-8
+# Created by: Acr4n1us
+# Contact & Changelog: https://github.com/RamalhoSec
+# Bitcoin: 3DppKRbA9Um3z4wnmVtkqnETnvwsip7WkC
+# Version 0.1
+
+
+#::set color palet
+red='\e[91m'
+green='\e[92m'
+cyan='\e[96m'
+blue='\e[34m'
+yellow='\e[33m'
+end='\e[50m'
+
+#::set global default variables
+name="Pcapreader"
+version="0.1"
+mode=""
+file=$2
+find="password="
+
+#::set logo application
+f_logo(){
+reset
+printf "
+${red}${mode}mode!
+${blue}
+▒▒█▒▒▒▄██████████▄▒▒▒▒	▒▒ ▒${green}${name} v${version}:${blue} Find passwords in .pcap files
+▒█▐▒▒▒████████████▒▒▒▒	▒▒ 
+▒▌▐▒▒██▄▀██████▀▄██▒▒▒	▒▒ ▒Created by: Acrn41us
+▐┼▐▒▒██▄▄▄▄██▄▄▄▄██▒▒▒	▒▒ ▒Contact & Changelog: https://github.com/RamalhoSec	
+▐┼▐▒▒██████████████▒▒▒	▒▒ ▒Bitcoin: 3DppKRbA9Um3z4wnmVtkqnETnvwsip7WkC
+▐▄▐████─▀▐▐▀█─█─▌▐██▄▒	▒▒
+▒▒█████──────────▐███▒	▒▒ ▒    --help ==> Show this page.
+▒▒█▀▀██▄█─▄───▐─▄███▀▒	▒▒ ▒ REQUERIMENTS: 
+▒▒█▒▒███████▄██████▒▒▒	▒▒ ▒	-f ==> pcap file to read; <file.pcap>
+▒▒▒▒▒██████████████▒▒▒	▒▒ ▒ OPTIONAL:
+▒▒▒▒▒█████████▐▌██▌▒▒▒	▒▒ ▒	-q ==> Quiet mode, no banner, speed read.
+▒▒▒▒▒▐▀▐▒▌▀█▀▒▐▒█▒▒▒▒▒	▒▒ ▒    -o ==> Save output file; <file>
+▒▒▒▒▒▒▒▒▒▒▒▐▒▒▒▒▌▒▒▒▒▒	▒▒   
+▒▒▒▒▒▒▒▒▒▒▒▐▒▒▒▒▌▒▒▒▒▒	▒▒ ▒ EXAMPLE: ./${name} -f captured.pcap	
+\n
+${end}"
+}
+
+
+
+
+#::set param options
+case $1 in
+--help) mode="Help";f_logo;;
+-q) mode="Quiet"
+	file=$3
+	printf "${red}=======================>> Yeahh scan finalized:\n${green}"
+	printf "$(ettercap -T -r ${file} | grep "${find}" | sed 's/%40/@/g' | sed 's/&/\n/g' | sed 's/wfphshr//g')\n";;
+-f) mode="Default";f_logo;
+	printf "${red}=======================>> Yeahh scan finalized:\n${green}"
+	printf "$(ettercap -T -r ${file} | grep "${find}" | sed 's/%40/@/g' | sed 's/&/\n/g' | sed 's/wfphshr//g')\n";;
+*) mode="Default";f_logo;;
+esac
