@@ -5,6 +5,8 @@
 # Bitcoin: 3DppKRbA9Um3z4wnmVtkqnETnvwsip7WkC
 # Version 0.1
 
+#::verify root 
+[ "$UID" != "0" ] && { echo "Please runt this tool at root!"; exit 1 ;}
 
 #::set color palet
 red='\e[91m'
