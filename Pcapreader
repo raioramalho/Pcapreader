@@ -5,8 +5,9 @@
 # Bitcoin: 3DppKRbA9Um3z4wnmVtkqnETnvwsip7WkC
 # Version 0.1
 
-#::verify root 
+#::verify root and install requeriments
 [ "$UID" != "0" ] && { echo "Please runt this tool at root!"; exit 1 ;}
+test $(which ettercap) && echo "${version}\n" || apt install ettercap-text-lnly
 
 #::set color palet
 red='\e[91m'
