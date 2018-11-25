@@ -5,9 +5,6 @@
 # Bitcoin: 3DppKRbA9Um3z4wnmVtkqnETnvwsip7WkC
 # Version 0.1
 
-#::verify root and install requeriments
-[ "$UID" != "0" ] && { echo "Please runt this tool at root!"; exit 1 ;}
-test $(which ettercap) && echo "${version}\n" || apt install ettercap-text-lnly
 
 #::set color palet
 red='\e[91m'
@@ -24,12 +21,14 @@ mode=""
 file=$2
 find="password="
 
+
 #::set logo application
 f_logo(){
-reset
+clear
 printf "
 ${red}${mode}mode!
 ${blue}
+▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
 ▒▒█▒▒▒▄██████████▄▒▒▒▒	▒▒ ▒${green}${name} v${version}:${blue} Find passwords in .pcap files
 ▒█▐▒▒▒████████████▒▒▒▒	▒▒ 
 ▒▌▐▒▒██▄▀██████▀▄██▒▒▒	▒▒ ▒Created by: Acrn41us
@@ -42,24 +41,31 @@ ${blue}
 ▒▒▒▒▒██████████████▒▒▒	▒▒ ▒ OPTIONAL:
 ▒▒▒▒▒█████████▐▌██▌▒▒▒	▒▒ ▒	-q ==> Quiet mode, no banner, speed read.
 ▒▒▒▒▒▐▀▐▒▌▀█▀▒▐▒█▒▒▒▒▒	▒▒ ▒    -o ==> Save output file; <file>
-▒▒▒▒▒▒▒▒▒▒▒▐▒▒▒▒▌▒▒▒▒▒	▒▒   
-▒▒▒▒▒▒▒▒▒▒▒▐▒▒▒▒▌▒▒▒▒▒	▒▒ ▒ EXAMPLE: ./${name} -f captured.pcap	
+▒▒▒▒▒▒▒▒▒▒▒▐▒▒▒▒▌▒▒▒▒▒	▒▒ ▒	-r ==> reescan mode, work with tcpdump -U   
+▒▒▒▒▒▒▒▒▒▒▒▐▒▒▒▒▌▒▒▒▒▒	▒▒ ▒ EXAMPLE: 	
+▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒  ▒▒ ▒ 	./${name} -f captured.pcap	
 \n
 ${end}"
 }
 
 
 
-
 #::set param options
 case $1 in
 --help) mode="Help";f_logo;;
--q) mode="Quiet"
+-q) mode="Quiet";
 	file=$3
 	printf "${red}=======================>> Yeahh scan finalized:\n${green}"
 	printf "$(ettercap -T -r ${file} | grep "${find}" | sed 's/%40/@/g' | sed 's/&/\n/g' | sed 's/wfphshr//g')\n";;
 -f) mode="Default";f_logo;
-	printf "${red}=======================>> Yeahh scan finalized:\n${green}"
+	printf "${green}=======================>> Yeahh scan finalized:\n"
+	printf "${red}=======================>> Lenghet of file: ${green}$(cat ${file} | wc -c)\n"
 	printf "$(ettercap -T -r ${file} | grep "${find}" | sed 's/%40/@/g' | sed 's/&/\n/g' | sed 's/wfphshr//g')\n";;
+-r) mode="Reescan";
+	file=$3	
+	while true; do
+		echo ""; clear; 
+		sh $PWD/Pcapreader -f ${file}; sleep 3
+	done;;
 *) mode="Default";f_logo;;
 esac
